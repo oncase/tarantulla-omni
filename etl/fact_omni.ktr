@@ -466,57 +466,6 @@ engajamento</note>
     </notepad>
   </notepads>
   <connection>
-    <name>NZN_DW</name>
-    <server/>
-    <type>VERTICA5</type>
-    <access>JNDI</access>
-    <database>NZN_STG</database>
-    <port>1521</port>
-    <username/>
-    <password>Encrypted </password>
-    <servername/>
-    <data_tablespace/>
-    <index_tablespace/>
-    <attributes>
-      <attribute>
-        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>IS_CLUSTERED</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>PORT_NUMBER</code>
-        <attribute>1521</attribute>
-      </attribute>
-      <attribute>
-        <code>PRESERVE_RESERVED_WORD_CASE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>QUOTE_ALL_FIELDS</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>USE_POOLING</code>
-        <attribute>N</attribute>
-      </attribute>
-    </attributes>
-  </connection>
-  <connection>
     <name>OmniConnection</name>
     <server/>
     <type>POSTGRESQL</type>
@@ -618,6 +567,57 @@ engajamento</note>
       </attribute>
     </attributes>
   </connection>
+  <connection>
+    <name>TarantullaWebConn</name>
+    <server/>
+    <type>VERTICA5</type>
+    <access>JNDI</access>
+    <database>${WebConnection}</database>
+    <port>1521</port>
+    <username/>
+    <password>Encrypted </password>
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
+    <attributes>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>IS_CLUSTERED</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>PORT_NUMBER</code>
+        <attribute>1521</attribute>
+      </attribute>
+      <attribute>
+        <code>PRESERVE_RESERVED_WORD_CASE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>QUOTE_ALL_FIELDS</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>USE_POOLING</code>
+        <attribute>N</attribute>
+      </attribute>
+    </attributes>
+  </connection>
   <order>
     <hop>
       <from>Organiza Twitter</from>
@@ -630,7 +630,7 @@ engajamento</note>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>fact_market</from>
+      <from>Web Input</from>
       <to>Oraganiza Market</to>
       <enabled>Y</enabled>
     </hop>
@@ -1206,7 +1206,7 @@ FROM ${TwitterSchema}.${TwitterTable}
     </GUI>
   </step>
   <step>
-    <name>fact_market</name>
+    <name>Web Input</name>
     <type>TableInput</type>
     <description/>
     <distribute>Y</distribute>
@@ -1216,7 +1216,7 @@ FROM ${TwitterSchema}.${TwitterTable}
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>NZN_DW</connection>
+    <connection>TarantullaWebConn</connection>
     <sql>SELECT
   date
 , title
@@ -1228,7 +1228,7 @@ FROM ${TwitterSchema}.${TwitterTable}
 , tag AS "hashtag"
 , (fb_share_count_per_article + fb_comment_count_per_article + fb_reaction_count_per_article + fb_comment_plugin_count_per_article) AS "engagement"
 , 'Web' AS "origem"
-FROM fact_market
+FROM ${WebSchema}.${WebTable}
 </sql>
     <limit>0</limit>
     <lookup/>
@@ -1366,6 +1366,10 @@ hashtag = hashtag.split(',').sort().filter(function(value, index, self){return s
       <name>explorerState</name>
       <attribute>
         <key>Omni Output</key>
+        <value/>
+      </attribute>
+      <attribute>
+        <key>Web Input</key>
         <value/>
       </attribute>
     </group>
