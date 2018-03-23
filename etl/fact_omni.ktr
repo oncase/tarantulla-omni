@@ -729,6 +729,94 @@ engajamento</note>
     </GUI>
   </step>
   <step>
+    <name>Log Error</name>
+    <type>WriteToLog</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <loglevel>log_level_basic</loglevel>
+    <displayHeader>Y</displayHeader>
+    <limitRows>N</limitRows>
+    <limitRowsNumber>0</limitRowsNumber>
+    <logmessage>#####################################
+		Insert Error Handling
+#####################################</logmessage>
+    <fields>
+      <field>
+        <name>date</name>
+      </field>
+      <field>
+        <name>author</name>
+      </field>
+      <field>
+        <name>publishername</name>
+      </field>
+      <field>
+        <name>origem</name>
+      </field>
+    </fields>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1664</xloc>
+      <yloc>496</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Omni Output</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>OmniConnection</connection>
+    <schema>${OmniSchema}</schema>
+    <table>${OmniTable}</table>
+    <commit>1000</commit>
+    <truncate>Y</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>N</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+    </fields>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1552</xloc>
+      <yloc>384</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
     <name>Oraganiza Market</name>
     <type>SelectValues</type>
     <description/>
@@ -1101,49 +1189,6 @@ engajamento</note>
     </GUI>
   </step>
   <step>
-    <name>Omni Output</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>OmniConnection</connection>
-    <schema>${OmniSchema}</schema>
-    <table>${OmniTable}</table>
-    <commit>1000</commit>
-    <truncate>Y</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>N</use_batch>
-    <specify_fields>N</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field/>
-    <fields>
-    </fields>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1552</xloc>
-      <yloc>384</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
     <name>Twitter Input</name>
     <type>TableInput</type>
     <description/>
@@ -1361,51 +1406,6 @@ hashtag = hashtag.split(',').sort().filter(function(value, index, self){return s
       <draw>Y</draw>
     </GUI>
   </step>
-  <step>
-    <name>Log Error</name>
-    <type>WriteToLog</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <loglevel>log_level_basic</loglevel>
-    <displayHeader>Y</displayHeader>
-    <limitRows>N</limitRows>
-    <limitRowsNumber>0</limitRowsNumber>
-    <logmessage>#####################################
-		Insert Error Handling
-#####################################</logmessage>
-    <fields>
-      <field>
-        <name>date</name>
-      </field>
-      <field>
-        <name>author</name>
-      </field>
-      <field>
-        <name>publishername</name>
-      </field>
-      <field>
-        <name>origem</name>
-      </field>
-    </fields>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1664</xloc>
-      <yloc>496</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
   <step_error_handling>
     <error>
       <source_step>Omni Output</source_step>
@@ -1426,18 +1426,6 @@ hashtag = hashtag.split(',').sort().filter(function(value, index, self){return s
   <attributes>
     <group>
       <name>explorerState</name>
-      <attribute>
-        <key>Omni Output</key>
-        <value/>
-      </attribute>
-      <attribute>
-        <key>Web Input</key>
-        <value/>
-      </attribute>
-      <attribute>
-        <key>Log Error</key>
-        <value/>
-      </attribute>
     </group>
   </attributes>
 </transformation>
