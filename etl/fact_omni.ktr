@@ -625,13 +625,8 @@ engajamento</note>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Oraganiza Market</from>
+      <from>Organiza Market</from>
       <to>UNION ALL</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Web Input</from>
-      <to>Oraganiza Market</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -684,6 +679,16 @@ engajamento</note>
       <to>Log Error</to>
       <enabled>Y</enabled>
     </hop>
+    <hop>
+      <from>Web Input</from>
+      <to>Filter by lang and category</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Filter by lang and category</from>
+      <to>Organiza Market</to>
+      <enabled>Y</enabled>
+    </hop>
   </order>
   <step>
     <name>Filter rows</name>
@@ -725,6 +730,70 @@ engajamento</note>
     <GUI>
       <xloc>560</xloc>
       <yloc>288</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Filter by lang and category</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <send_true_to>Organiza Market</send_true_to>
+    <send_false_to/>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <conditions>
+          <condition>
+            <negated>N</negated>
+            <leftvalue>publisherLang</leftvalue>
+            <function>=</function>
+            <rightvalue/>
+            <value>
+              <name>constant</name>
+              <type>String</type>
+              <text>en</text>
+              <length>-1</length>
+              <precision>-1</precision>
+              <isnull>N</isnull>
+              <mask/>
+            </value>
+          </condition>
+          <condition>
+            <negated>N</negated>
+            <operator>AND</operator>
+            <leftvalue>dim_category</leftvalue>
+            <function>=</function>
+            <rightvalue/>
+            <value>
+              <name>constant</name>
+              <type>String</type>
+              <text>Tecnologia</text>
+              <length>-1</length>
+              <precision>-1</precision>
+              <isnull>N</isnull>
+              <mask/>
+            </value>
+          </condition>
+        </conditions>
+      </condition>
+    </compare>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>656</xloc>
+      <yloc>464</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -774,7 +843,42 @@ engajamento</note>
     </GUI>
   </step>
   <step>
-    <name>Oraganiza Market</name>
+    <name>Omni Output</name>
+    <type>VerticaBulkLoader</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>OmniConnection</connection>
+    <schema>${OmniSchema}</schema>
+    <table>${OmniTable}</table>
+    <specify_fields>N</specify_fields>
+    <fields>
+    </fields>
+    <exceptions_filename/>
+    <rejected_data_filename/>
+    <abort_on_error>Y</abort_on_error>
+    <direct>Y</direct>
+    <stream_name/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1584</xloc>
+      <yloc>384</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Organiza Market</name>
     <type>SelectValues</type>
     <description/>
     <distribute>Y</distribute>
@@ -787,33 +891,43 @@ engajamento</note>
     <fields>
       <field>
         <name>date</name>
+        <rename/>
       </field>
       <field>
         <name>author</name>
+        <rename/>
       </field>
       <field>
         <name>publishername</name>
+        <rename/>
       </field>
       <field>
         <name>title</name>
+        <rename/>
       </field>
       <field>
         <name>hashtag</name>
+        <rename/>
       </field>
       <field>
         <name>publisherlang</name>
+        <rename/>
       </field>
       <field>
         <name>publisherlocale</name>
+        <rename/>
       </field>
       <field>
         <name>dim_category</name>
+        <rename/>
       </field>
       <field>
         <name>engagement</name>
+        <rename/>
       </field>
       <field>
         <name>origem</name>
+        <rename/>
       </field>
       <select_unspecified>N</select_unspecified>
       <meta>
@@ -1162,7 +1276,7 @@ engajamento</note>
 , publisher_twitter AS "author"
 , publisher_name "publishername"
 , tweet_content 
-, dim_hashtag AS "hashtag"
+, tags AS "hashtag"
 , lang AS "publisherlang"
 , locale AS "publisherlocale"
 , dim_category
@@ -1228,11 +1342,12 @@ FROM ${TwitterSchema}.${TwitterTable}
   date
 , title
 , author
-, publishername
-, publisherlang
-, publisherlocale
+, publisherName
+, publisherLang
+, publisherLocale
 , dim_category
 , tag AS "hashtag"
+, fb_share_count_per_article
 , (fb_share_count_per_article + fb_comment_count_per_article + fb_reaction_count_per_article + fb_comment_plugin_count_per_article) AS "engagement"
 , 'Web' AS "origem"
 FROM ${WebSchema}.${WebTable}
@@ -1250,7 +1365,7 @@ FROM ${WebSchema}.${WebTable}
       </output>
     </remotesteps>
     <GUI>
-      <xloc>656</xloc>
+      <xloc>496</xloc>
       <yloc>464</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1360,41 +1475,6 @@ hashtag = hashtag.split(',').sort().filter(function(value, index, self){return s
     <GUI>
       <xloc>224</xloc>
       <yloc>288</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Omni Output</name>
-    <type>VerticaBulkLoader</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>OmniConnection</connection>
-    <schema>${OmniSchema}</schema>
-    <table>${OmniTable}</table>
-    <specify_fields>N</specify_fields>
-    <fields>
-    </fields>
-    <exceptions_filename/>
-    <rejected_data_filename/>
-    <abort_on_error>Y</abort_on_error>
-    <direct>Y</direct>
-    <stream_name/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1584</xloc>
-      <yloc>384</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
