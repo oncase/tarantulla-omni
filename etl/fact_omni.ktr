@@ -1282,7 +1282,7 @@ engajamento</note>
 , dim_category
 , engagement
 , 'Twitter' AS "origem"
-FROM ${TwitterSchema}.${TwitterTable}
+FROM ${TwitterSchema}.${TwitterTaggedTable}
 </sql>
     <limit>0</limit>
     <lookup/>
