@@ -517,6 +517,57 @@ engajamento</note>
     </attributes>
   </connection>
   <connection>
+    <name>postgres</name>
+    <server>localhost</server>
+    <type>POSTGRESQL</type>
+    <access>Native</access>
+    <database>nzn_staging</database>
+    <port>5438</port>
+    <username>postgres</username>
+    <password>Encrypted 2be98afc86aa7f2e4a417ad71cd97fe88</password>
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
+    <attributes>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>IS_CLUSTERED</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>PORT_NUMBER</code>
+        <attribute>5438</attribute>
+      </attribute>
+      <attribute>
+        <code>PRESERVE_RESERVED_WORD_CASE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>QUOTE_ALL_FIELDS</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>USE_POOLING</code>
+        <attribute>N</attribute>
+      </attribute>
+    </attributes>
+  </connection>
+  <connection>
     <name>TarantullaTwitterConn</name>
     <server/>
     <type>POSTGRESQL</type>
@@ -630,11 +681,6 @@ engajamento</note>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Twitter Input</from>
-      <to>remove duplicated tags</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>remove duplicated tags</from>
       <to>Split hashtag to rows</to>
       <enabled>Y</enabled>
@@ -689,6 +735,26 @@ engajamento</note>
       <to>Organiza Market</to>
       <enabled>Y</enabled>
     </hop>
+    <hop>
+      <from>Twitter Input</from>
+      <to>remove nulls</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>remove nulls</from>
+      <to>remove duplicated tags</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>remove nulls</from>
+      <to>Write to log</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Table input</from>
+      <to>remove nulls</to>
+      <enabled>N</enabled>
+    </hop>
   </order>
   <step>
     <name>Filter rows</name>
@@ -728,7 +794,7 @@ engajamento</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>560</xloc>
+      <xloc>768</xloc>
       <yloc>288</yloc>
       <draw>Y</draw>
     </GUI>
@@ -792,7 +858,7 @@ engajamento</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>656</xloc>
+      <xloc>864</xloc>
       <yloc>464</yloc>
       <draw>Y</draw>
     </GUI>
@@ -837,7 +903,7 @@ engajamento</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1712</xloc>
+      <xloc>1920</xloc>
       <yloc>496</yloc>
       <draw>Y</draw>
     </GUI>
@@ -872,7 +938,7 @@ engajamento</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1584</xloc>
+      <xloc>1792</xloc>
       <yloc>384</yloc>
       <draw>Y</draw>
     </GUI>
@@ -956,7 +1022,7 @@ engajamento</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>848</xloc>
+      <xloc>1056</xloc>
       <yloc>464</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1015,7 +1081,7 @@ engajamento</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>848</xloc>
+      <xloc>1056</xloc>
       <yloc>288</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1048,7 +1114,7 @@ engajamento</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>560</xloc>
+      <xloc>768</xloc>
       <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1079,7 +1145,7 @@ engajamento</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>400</xloc>
+      <xloc>608</xloc>
       <yloc>288</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1150,7 +1216,7 @@ engajamento</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>848</xloc>
+      <xloc>1056</xloc>
       <yloc>192</yloc>
       <draw>N</draw>
     </GUI>
@@ -1254,7 +1320,7 @@ engajamento</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1232</xloc>
+      <xloc>1440</xloc>
       <yloc>384</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1321,7 +1387,7 @@ FROM ${TwitterSchema}.${TwitterTaggedTable}
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1040</xloc>
+      <xloc>1248</xloc>
       <yloc>384</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1365,7 +1431,7 @@ FROM ${WebSchema}.${WebTable}
       </output>
     </remotesteps>
     <GUI>
-      <xloc>496</xloc>
+      <xloc>704</xloc>
       <yloc>464</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1426,7 +1492,7 @@ FROM ${WebSchema}.${WebTable}
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1392</xloc>
+      <xloc>1600</xloc>
       <yloc>384</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1473,8 +1539,116 @@ hashtag = hashtag.split(',').sort().filter(function(value, index, self){return s
       </output>
     </remotesteps>
     <GUI>
-      <xloc>224</xloc>
+      <xloc>432</xloc>
       <yloc>288</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>remove nulls</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <send_true_to>remove duplicated tags</send_true_to>
+    <send_false_to>Write to log</send_false_to>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>hashtag</leftvalue>
+        <function>IS NOT NULL</function>
+        <rightvalue/>
+      </condition>
+    </compare>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>240</xloc>
+      <yloc>288</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Write to log</name>
+    <type>WriteToLog</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <loglevel>log_level_basic</loglevel>
+    <displayHeader>Y</displayHeader>
+    <limitRows>N</limitRows>
+    <limitRowsNumber>0</limitRowsNumber>
+    <logmessage/>
+    <fields>
+      </fields>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>240</xloc>
+      <yloc>128</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Table input</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>postgres</connection>
+    <sql>SELECT
+  timestamp_twitter AS "date"
+, publisher_twitter AS "author"
+, publisher_name "publishername"
+, tweet_content 
+, tags AS "hashtag"
+, lang AS "publisherlang"
+, locale AS "publisherlocale"
+, dim_category
+, engagement
+, 'Twitter' AS "origem"
+FROM staging.stg_tagged
+</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>64</xloc>
+      <yloc>400</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
